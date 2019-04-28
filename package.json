@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "main": "index.js",
+  "devDependencies": {
+    "handlebars": "^4.1.2",
+    "handlebars-layouts": "^3.1.4"
+  }
+}
