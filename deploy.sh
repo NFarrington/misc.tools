@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eufo pipefail
 
 node index.js
 
