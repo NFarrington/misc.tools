@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "main": "index.js",
   "devDependencies": {
     "handlebars": "^4.1.2",
