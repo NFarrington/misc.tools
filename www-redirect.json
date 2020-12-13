@@ -1,6 +1,0 @@
-{
-  "RedirectAllRequestsTo": {
-    "HostName": "misc.tools",
-    "Protocol": "https"
-  }
-}
