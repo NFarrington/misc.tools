@@ -58,5 +58,5 @@ jobs:
           aws-region: us-east-1
         if: matrix.should_run
       - name: Deploy to ${{ matrix.environment }}
-        run: aws s3 sync --delete build/ s3://misc-tools-${{ matrix.environment }}-therailroad
+        run: aws s3 sync --sse AES256 --delete build/ s3://misc-tools-${{ matrix.environment }}-therailroad
         if: matrix.should_run
