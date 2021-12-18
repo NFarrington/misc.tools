@@ -1,4 +1,4 @@
-import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
+import { readFileSync, existsSync, mkdirSync, writeFileSync, cpSync } from 'fs';
 import handlebars from 'handlebars';
 import layouts from 'handlebars-layouts';
 
@@ -20,3 +20,4 @@ if (!existsSync('build/')) {
 writeFileSync('build/index.html', index({ 'pageId': 'index', 'index-active': 'active' }));
 writeFileSync('build/pwgen.html', pwgen({ 'pwgen-active': 'active' }));
 writeFileSync('build/error.html', errorPage());
+cpSync('src/assets/', 'build/', {'recursive': true});
