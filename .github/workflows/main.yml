@@ -15,15 +15,15 @@ jobs:
         node-version:
           - 17.x
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - name: Build files
         run: node build.js
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v7
         with:
           name: static-site
           path: build/
@@ -32,29 +32,29 @@ jobs:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     strategy:
       max-parallel: 1
       matrix:
         include:
           - environment: dev
-            aws-access-key-id: DEV_AWS_ACCESS_KEY_ID
-            aws-secret-access-key: DEV_AWS_SECRET_ACCESS_KEY
+            deploy-role-arn: AWS_DEPLOY_ROLE_ARN_DEV
             should_run: true
           - environment: prod
-            aws-access-key-id: PROD_AWS_ACCESS_KEY_ID
-            aws-secret-access-key: PROD_AWS_SECRET_ACCESS_KEY
+            deploy-role-arn: AWS_DEPLOY_ROLE_ARN_PROD
             should_run: ${{ github.ref == 'refs/heads/main' }}
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v8
         with:
           name: static-site
           path: build/
         if: matrix.should_run
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v6
         with:
-          aws-access-key-id: ${{ secrets[matrix.aws-access-key-id] }}
-          aws-secret-access-key: ${{ secrets[matrix.aws-secret-access-key] }}
+          role-to-assume: ${{ vars[matrix.deploy-role-arn] }}
           aws-region: us-east-1
         if: matrix.should_run
       - name: Deploy to ${{ matrix.environment }}
